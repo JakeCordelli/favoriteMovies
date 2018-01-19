@@ -13,7 +13,7 @@ x=[''.join([a,b,c]) for a in ltrs for b in ltrs for c in ltrs]
 dictionary={}
 
 for i in range(17576):
-    dictionary[x[i]]=i
+    dictionary[x[i]]=i+1
 
 print (dictionary)
 
