@@ -5,16 +5,16 @@ x-coordinates for plotting'''
 def turnTo3(movieTitle):
     '''Include code to remove the'''
     theRemoved=movieTitle.replace("the ","")
-    theRemoved=movieTitle.replace("The ","")
+    theRemoved=theRemoved.replace("The ","")
 
+    '''Code to lowercase'''
+    lowerCased=theRemoved.lower()
+    #print(movieTitle)
+    #print(theRemoved)
 
-    print(movieTitle)
-    print(theRemoved)
+    code=lowerCased[:3]
+    #print(code)
+    return(code)
 
-    code=theRemoved[:3]
-    print(code)
-
-
-turnTo3("Finding Nemo")
 
 
