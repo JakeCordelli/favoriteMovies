@@ -6,6 +6,8 @@
 
 from turnTo3 import turnTo3
 
+
+'''Modify the code to reference csv rather than hash table'''
 '''Generate a list of strings from AAA-ZZZ'''
 import string
 
@@ -14,31 +16,18 @@ ltrs = list(string.ascii_lowercase)
 x = [''.join([a, b, c]) for a in ltrs for b in ltrs for c in ltrs]
 # print(x)
 
-
 '''Map these strings to values in a dictionary'''
-
 letterMap = {}
-
 for i in range(17576):
     letterMap[x[i]] = i+1
 
 '''Matches the generated 3 digit code to the dictionary and return the x,y coordinates for the point'''
-
 
 '''Include code to export dictionary as a csv file'''
 import csv
 w = csv.writer(open("output.csv", "w"))
 for key, val in letterMap.items():
     w.writerow([key, val])
-
-
-
-'''Modify the code to reference csv rather than hash table'''
-
-
-
-
-
 
 
 import matplotlib.pyplot as plt
@@ -63,7 +52,7 @@ def assignValues(movieTitle, rating, seen):
     plt.plot(value, rating, marker='o', markersize=5, color="magenta")
 
     '''Add a division line at x=0'''
-    plt.plot([0,0], [0,10])
+    plt.plot([0,0], [0,10], color='cyan')
 
     '''Add labels to the points'''
     plt.annotate(movieTitle, (value+10, rating), size='7')
@@ -74,31 +63,26 @@ def assignValues(movieTitle, rating, seen):
     return (value, rating)
 
 
-assignValues("The godfather", 8, 1)
-assignValues("Bee Movie", 6, 0)
-assignValues("Brave Heart", 5, 0)
-assignValues("Zoolander", 5, 0)
-assignValues("Zongo", 10, 1)
-assignValues("Jumanji: Welcome to the Jungle", 9, 0)
-assignValues("Gayest movie ever made", 10, 0)
-assignValues("Robocop", 2, 1)
+'''Pull this information from the database'''
+import sqlite3
+connection = sqlite3.connect("movies.db")
 
-'''When adding a datapoint next to another one very closely, there is stacking'''
-assignValues("Jumanji", 7, 1)
-assignValues("Jumbalaya", 7, 1)
+cursor = connection.cursor()
+cursor.execute("SELECT * FROM movies")
+print("fetchall:")
+result = cursor.fetchall()
+x,y,z=0,0,0
+movieList=[]
+for r in result:
+    print(r[1])
 
-import numpy as np
+    #Add the movies from the database into a list (no reason)
+    movieList.append(r[1])
 
+    #Get information from each row
+    x,y,z=r[1],r[2],r[3]
+    assignValues(x, y, z)
 
 
 plt.show()
-
-
-
-
-# def createCoordinate(movieTitle, rating):
-
-
-
-
 
