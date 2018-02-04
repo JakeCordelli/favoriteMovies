@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+
+
+
+
+<html>
+  <head>
+
+	<link rel="stylesheet" href="style.css">
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <script type='text/javascript'>
+var ratData = [];
+
+d3.csv("data.csv", function(d) {
+	return {
+		xCo: d.xCo,
+		yCo: +d.yCo,
+		title : +d.title
+	};
+}, function(error, rows) {
+	ratData = rows;
+	console.log(ratData);
+	createVisualization();
+});
+
+function createVisualization(){
+	//Width and height
+	var w = 800;
+	var h = 500;
+	var padding = 30;
+
+
+
+var tooltip = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("font-family", "sans-serif")
+	.style("font-size", "10px")
+	.style("z-index", "10")
+	.style("visibility", "hidden");
+
+
+var xScale = d3.scale.linear()
+	.domain([0, d3.max(ratData, function(d) {
+		return d.xCo;
+	})])
+	.range([padding, w - padding]);
+
+var yScale = d3.scale.linear()
+	.domain([0, d3.max(ratData, function(d) {
+		return d.yCo;
+	})])
+	.range([h - padding, padding]);
+
+
+	//Create SVG element
+	var svg = d3.select("body")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h)
+				.attr("style", "outline: thin solid black;");
+
+
+svg.selectAll("circle")
+	.data( ratData )
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+			return xScale(d.xCo);
+	})
+	.attr("cy", function(d) {
+			return yScale(d.yCo);
+	})
+	.attr("r", 5)
+	.on("mouseover", function(d){
+		return tooltip.style("visibility", "visible").text(d.title + ": " + d.title + ", " + d.yCo);
+	})
+	.on("mousemove", function(d){
+		return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.title + ": " + d.xCo+ ", " + d.yCo);
+	})
+	.on("mouseout", function(d){
+		return tooltip.style("visibility", "hidden");
+	});
+
+}
+
+
+</script>
+  </body>
+</html>
